@@ -5,7 +5,7 @@ HOST = socket.gethostbyname(socket.gethostname())
 PORT = 8089
 
 class hostme():
-    def __init__(self,HOST,PORT,timeout=600,num=1):
+    def __init__(self,HOST,PORT,num=5):
         print("Ip: " + str(HOST))
         print("Port: " + str(PORT))
 
@@ -13,17 +13,7 @@ class hostme():
         self.serversocket.bind((HOST, PORT)) ##Bind address of ip,port
         self.serversocket.listen(num) #*num* connections max
         print("Listening...")
-        if num == 1: ##for individual connections
-            self.connection, self.address = self.serversocket.accept()
-            self.connection.settimeout(timeout)
-        else: ##for several connections
-            self.connection = []
-            self.adress = []
-            for i in range(num):
-                tempsock = self.serversocket.accept()
-                connection.append(tempsock[0])
-                adress.append(tempsock[1])
-                self.connection[i].settimeout(timeout)
+        self.connection, self.address = self.serversocket.accept() ##accepts connections
         print("Connected!")
     def __enter__(self):
         return self
@@ -31,14 +21,12 @@ class hostme():
         self.serversocket.close()
 
 class LostComs(Exception):
-    input("Connection was lost.")
+    pass
 
 def listen(connection):
     while True:
         try:
             data = connection.recv(64) ##Receives data
-            if connection.gettimeout() <= 0:
-                raise LostComs
         except: ##Keeps program from crashing if one side loses connection
             raise LostComs
         if len(data) > 0: ##Checks if there is data

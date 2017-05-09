@@ -5,13 +5,12 @@ HOST = '192.168.112.146'
 PORT = 8089
 
 class clientme():
-    def __init__(self,HOST,PORT,timeout=600):
+    def __init__(self,HOST,PORT):
         self.clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) ##start
         print("Waiting...")
         for i in range(1,35): ##Wait for connection
             try:
                 self.clientsocket.connect((HOST,PORT))
-                self.clientsocket.settimeout(timeout)
                 print("Connected!")
                 fail = False
                 break
@@ -29,7 +28,7 @@ class clientme():
         self.clientsocket.close()
 
 class LostComs(Exception):
-    input("Connection was lost.")
+    pass
 
 def speak(clientsocket,send):
     while True:
