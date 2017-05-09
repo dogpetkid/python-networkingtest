@@ -3,15 +3,15 @@ from servertest import *
 
 HOSTself = socket.gethostbyname(socket.gethostname())
 print("Ip: " + HOSTself)
-PORT = 8089##int(input("Port: "))
-HOSTother = '192.168.112.146'##input("Input the other Ip: ")
+PORT = int(input("Port: "))
+HOSTother = input("Input the other Ip: ")
 
 def finding():
     print("Finding")
-    with hostme(HOSTself,PORT) as sock:
+    if True:##with hostme(HOSTself,PORT) as sock:
         while True:
             try:
-                get = listen(sock.connection)
+                get = listen(connection.sock)
                 print(get)
                 break
             except Exception as e:
@@ -19,25 +19,25 @@ def finding():
 
 def sending():
     print("Sending")
-    with clientme(HOSTother,PORT) as sock:
+    if True:##with clientme(HOSTother,PORT) as sock:
         while True:
             try:
-                send = speak(sock.clientsocket, input("Send: "))
+                send = speak(connection.sock, input("Send: "))
                 break
             except Exception as e:
                 input(str(e))
 
 if bool(input("Type a letter to go host ")):
-    '''connection = hostme(HOSTself,PORT)
-    connection.sock = connection.serversocket'''
+    connection = hostme(HOSTself,PORT)
+    connection.sock = connection.connection
     
     while True:
         finding()
         sending()
 
 else:
-    '''connection = clientme(HOSTother,PORT)
-    connection.sock = connection.clientsocket'''
+    connection = clientme(HOSTother,PORT)
+    connection.sock = connection.clientsocket
     
     while True:
         sending()
