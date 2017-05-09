@@ -28,7 +28,7 @@ def Tcp_Close( ):
 
 Tcp_connect( '127.0.0.1', 17098)
 Tcp_Write('hi')
-print Tcp_Read()
+print (Tcp_Read())
 Tcp_Write('hi')
-print Tcp_Read()
+print (Tcp_Read())
 Tcp_Close()

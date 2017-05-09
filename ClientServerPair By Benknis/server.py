@@ -38,8 +38,8 @@ def Tcp_Close( ):
 
 Tcp_server_wait ( 5, 17098 )
 Tcp_server_next()
-print Tcp_Read()
+print (Tcp_Read())
 Tcp_Write('hi')
-print Tcp_Read()
+print (Tcp_Read())
 Tcp_Write('hi')
 Tcp_Close()
