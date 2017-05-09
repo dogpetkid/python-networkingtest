@@ -774,7 +774,7 @@ def test():
     input("Don't press")
 
 ##Below is the game turn cycle
-def gamecycle():
+def gamecycleHOTSEAT():
     print("Game starts with white")
     while True:
         ##The 'end' variable is a message for the end of the game
@@ -793,6 +793,12 @@ def gamecycle():
                 break
     input("(To leave press enter 1 last time.)")
 
+def gamecycleSIDEWHITE():
+    pass
+
+def gamecycleSIDEBLACK():
+    pass
+
 asknotation()
 #test()
-gamecycle()
+gamecycleHOTSEAT()
