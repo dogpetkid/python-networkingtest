@@ -3,8 +3,8 @@ from servertest import *
 
 HOSTself = socket.gethostbyname(socket.gethostname())
 print("Ip: " + HOSTself)
-PORT = 8089##int(input("Port: "))
-HOSTother = '10.72.20.78'##input("Input the other Ip: ")
+PORT = int(input("Port: "))
+HOSTother = input("Input the other Ip: ")
 
 def finding():
     print("Finding")
@@ -29,7 +29,7 @@ def sending():
 
 if bool(input("Type a letter to go host ")):
     connection = hostme(HOSTself,PORT)
-    connection.sock = connection.serversocket
+    connection.sock = connection.connection
     
     while True:
         finding()
