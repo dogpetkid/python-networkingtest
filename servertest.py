@@ -12,7 +12,7 @@ class hostme():
         self.serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) ##start
         self.serversocket.bind((HOST, PORT)) ##Bind address of ip,port
         self.serversocket.listen(num) #*num* connections max
-        print("Listening")
+        print("Listening...")
         self.connection, self.address = self.serversocket.accept() ##accepts connections
         print("Connected!")
     def __enter__(self):
