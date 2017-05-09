@@ -8,24 +8,22 @@ HOSTother = input("Input the other Ip: ")
 
 def finding():
     print("Finding")
-    if True:##with hostme(HOSTself,PORT) as sock:
-        while True:
-            try:
-                get = listen(connection.sock)
-                print(get)
-                break
-            except Exception as e:
-                input(str(e))
+    while True:
+        try:
+            get = listen(connection.sock)
+            print(get)
+            break
+        except Exception as e:
+            input(str(e))
 
 def sending():
     print("Sending")
-    if True:##with clientme(HOSTother,PORT) as sock:
-        while True:
-            try:
-                send = speak(connection.sock, input("Send: "))
-                break
-            except Exception as e:
-                input(str(e))
+    while True:
+        try:
+            send = speak(connection.sock, input("Send: "))
+            break
+        except Exception as e:
+            input(str(e))
 
 if bool(input("Type a letter to go host ")):
     connection = hostme(HOSTself,PORT)
