@@ -6,9 +6,9 @@ from Choose import *
 try: ##Import the multiplayer additions
     from clienttest import *
     from servertest import *
-    multi = False
-except:
     multi = True
+except:
+    multi = False
 
 ##Mess alert
 print("If you see this... you might have a box that just pops on your screen later in the game (AND IT CAN GET ANNOYING).")
@@ -799,23 +799,50 @@ def gamecycleHOTSEAT():
                 break
     input("(To leave press enter 1 last time.)")
 
-def gamecycleSIDEWHITE():
+def gamecycleSIDEHOST():
     pass
 
-def gamecycleSIDEBLACK():
+def gamecycleSIDECLIENT():
     pass
 
 asknotation()
 #test()
 
-if not(multi):
+if not(multi): ##no modules to do multiplayer
     gamecycleHOTSEAT()
-else:
+
+else: ##modules are present
     if choose2("Multiplayer?","y","n",1) == "y":
-        if choose2("Host or client","h","c",1) == "h":
+        if choose2("Host or client","h","c",1) == "h": ##Host
             HOST = socket.gethostbyname(socket.gethostname())
-            PORT = int(input("Port: "))
-        #$HOST/CLIENT
-        #$WHITE/BLACK
-    else:
+            print("Ip: "+ str(HOST))
+            PORT = (input("Port: "))
+            while not(PORT.isdigit):
+                PORT = (input("Port (MUST BE A NUMBER): "))
+            PORT = int(PORT)
+            
+            try:
+                chesssocket = hostme(HOST,PORT)
+                chessconnection = chesssocket.connection
+                input("GOOD")###
+            except Exception as e:
+                input("There was an issue... >> " + str(e))
+                gamecycleHOTSEAT()
+        
+        else: ##Client
+            HOST = input("Ip: ")
+            PORT = (input("Port: "))
+            while not(PORT.isdigit):
+                PORT = (input("Port (MUST BE A NUMBER): "))
+            PORT = int(PORT)
+            try:
+                chesssocket = clientme(HOST,PORT)
+                chessconnection = chesssocket.clientsocket
+                input("GOOD")###
+            except Exception as e:
+                input("There was an issue... >> " + str(e))
+                gamecycleHOTSEAT()
+        #$CLIENT/HOST cycle
+    
+    else: ##not multiplayer
         gamecycleHOTSEAT()
