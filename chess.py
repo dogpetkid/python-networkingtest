@@ -3,6 +3,12 @@
 ##Imports
 import os
 from Choose import *
+try: ##Import the multiplayer additions
+    from clienttest import *
+    from servertest import *
+    multi = False
+except:
+    multi = True
 
 ##Mess alert
 print("If you see this... you might have a box that just pops on your screen later in the game (AND IT CAN GET ANNOYING).")
@@ -801,4 +807,15 @@ def gamecycleSIDEBLACK():
 
 asknotation()
 #test()
-gamecycleHOTSEAT()
+
+if not(multi):
+    gamecycleHOTSEAT()
+else:
+    if choose2("Multiplayer?","y","n",1) == "y":
+        if choose2("Host or client","h","c",1) == "h":
+            HOST = socket.gethostbyname(socket.gethostname())
+            PORT = int(input("Port: "))
+        #$HOST/CLIENT
+        #$WHITE/BLACK
+    else:
+        gamecycleHOTSEAT()
