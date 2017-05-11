@@ -117,7 +117,7 @@ class piece():
         self.y = file
         ##Color is described as
         ##White = 1
-        ##Balck = 0
+        ##Black = 0
         self.color = color
         self.letter = (type(self).__name__)[:1] ##Sets the letter to print the piece as the first letter...
         if type(self).__name__ == "knight": ##unless it is a knight, knights are n's
