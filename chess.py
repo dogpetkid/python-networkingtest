@@ -3,7 +3,8 @@
 ##Imports
 import os
 from Choose import *
-import winsound
+try: import winsound
+except: pass
 try: ##Import the multiplayer additions
     from clienttest import *
     from servertest import *
@@ -816,7 +817,8 @@ def gamecycleSIDEHOST():
         while True: ##Turn distributer
             if turncolor == sidecolor:
                 input("Your turn: ")
-                winsound.PlaySound(None,0)
+                try: winsound.PlaySound(None,0)
+                except: pass
                 moves = board.turn(sidecolor)
                 if moves[0] != "":
                     input(end)
@@ -835,7 +837,8 @@ def gamecycleSIDEHOST():
                 square = board.square[oppmoves[0]][oppmoves[1]]
                 square.moveme([oppmoves[2],oppmoves[3]],oppmoves[4])
                 os.system('cls' if os.name == 'nt' else 'clear')
-                winsound.PlaySound("SystemExclamation",winsound.SND_ASYNC | winsound.SND_LOOP)
+                try: winsound.PlaySound("SystemExclamation",winsound.SND_ASYNC | winsound.SND_LOOP)
+                except: pass
             ##Rotate turn
             turncolor = (turncolor+1)%2
         input("Game over")
@@ -855,7 +858,8 @@ def gamecycleSIDECLIENT():
         while True: ##Turn distributer
             if turncolor == sidecolor:
                 input("Your turn: ")
-                winsound.PlaySound(None,0)
+                try: winsound.PlaySound(None,0)
+                except: pass
                 moves = board.turn(sidecolor)
                 if moves[0] != "":
                     input(end)
@@ -874,7 +878,8 @@ def gamecycleSIDECLIENT():
                 square = board.square[oppmoves[0]][oppmoves[1]]
                 square.moveme([oppmoves[2],oppmoves[3]],oppmoves[4])
                 os.system('cls' if os.name == 'nt' else 'clear')
-                winsound.PlaySound("SystemExclamation",winsound.SND_ASYNC | winsound.SND_LOOP)
+                try: winsound.PlaySound("SystemExclamation",winsound.SND_ASYNC | winsound.SND_LOOP)
+                except: pass
             ##Rotate turn
             turncolor = (turncolor+1)%2
         input("Game over")
