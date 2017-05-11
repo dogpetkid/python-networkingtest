@@ -800,18 +800,24 @@ def gamecycleHOTSEAT():
     input("(To leave press enter 1 last time.)")
 
 def gamecycleSIDEHOST():
-    #$Choose the starting color and tell it to the client
+    global chessconnection
+    sidecolor = choose2("Color? White(1) or Black(0)","1","0",1)
+    speak(chessconnection,sidecolor)
+    sidecolor = int(sidecolor)
     try:
-        input("GOOD")###
+        input("Good " + str(sidecolor))###
     except LostComs:
         chessconnection.close()
         input("Lost communication... continuing to single sided play.")
         gamecycleUNISIDE(color)
 
 def gamecycleSIDECLIENT():
-    #$Wait for host to choose color
+    global chessconnection
+    print("Waiting for HOST to pick their color.")
+    oppcolor = listen(chessconnection)
+    sidecolor = (int(oppcolor)+1)%2 ##I know the other side's color so I can add 1 and mod 2 (white(1)+1>>2>>0, black(0)+1>>1%2>>1)
     try:
-        input("GOOD")###
+        input("Good " + str(sidecolor))###
     except LostComs:
         chessconnection.close()
         input("Lost communication... continuing to single sided play.")
@@ -833,7 +839,7 @@ else: ##modules are present
             HOST = socket.gethostbyname(socket.gethostname())
             print("Ip: "+ str(HOST))
             PORT = (input("Port: "))
-            while not(PORT.isdigit):
+            while not(PORT.isdigit()):
                 PORT = (input("Port (MUST BE A NUMBER): "))
             PORT = int(PORT)
             
@@ -843,12 +849,12 @@ else: ##modules are present
                 gamecycleSIDEHOST()
             except Exception as e:
                 input("There was an issue... >> " + str(e))
-                gamecycleHOTSEAT()
+                gamecycleHOTSEAT()#$go to the gamecycleUNISIDE
         
         else: ##Client
             HOST = input("Ip: ")
             PORT = (input("Port: "))
-            while not(PORT.isdigit):
+            while not(PORT.isdigit()):
                 PORT = (input("Port (MUST BE A NUMBER): "))
             PORT = int(PORT)
             try:
@@ -857,7 +863,7 @@ else: ##modules are present
                 gamecycleSIDECLIENT()
             except Exception as e:
                 input("There was an issue... >> " + str(e))
-                gamecycleHOTSEAT()
+                gamecycleHOTSEAT()#$go to the gamecycleUNISIDE
     
     else: ##not multiplayer
         gamecycleHOTSEAT()
