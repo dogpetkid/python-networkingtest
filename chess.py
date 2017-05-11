@@ -825,19 +825,21 @@ def gamecycleSIDEHOST():
                 speak(chessconnection,packmoves)
             else:
                 print("Opponent's turn...")
+                board.asciiboard(sidecolor)
                 packoppmoves = listen(chessconnection)
                 oppmoves = arrayunpackage(packoppmoves)
                 for i in range(4):
                     oppmoves[i] = int(oppmoves[i])
-                square = board.square[oppmoves[0],oppmoves[1]]#$list indices must be integers or slices, not tuple
-                square.moveme(oppmoves[2:])
+                square = board.square[oppmoves[0]][oppmoves[1]]
+                square.moveme([oppmoves[2],oppmoves[3]],oppmoves[4])
+                os.system('cls' if os.name == 'nt' else 'clear')
             ##Rotate turn
             turncolor = (turncolor+1)%2
         input("Game over")
     except LostComs:
         chessconnection.close()
         input("Lost communication... continuing to single sided play.")
-        gamecycleUNISIDE(color)
+        gamecycleUNISIDE(turncolor)
 
 def gamecycleSIDECLIENT():
     global chessconnection
@@ -860,21 +862,21 @@ def gamecycleSIDECLIENT():
                 speak(chessconnection,packmoves)
             else:
                 print("Opponent's turn...")
+                board.asciiboard(sidecolor)
                 packoppmoves = listen(chessconnection)
                 oppmoves = arrayunpackage(packoppmoves)
                 for i in range(4):
                     oppmoves[i] = int(oppmoves[i])
-                square = board.square[oppmoves[0],oppmoves[1]]#$list indices must be integers or slices, not tuple
-                print("flag4")###
-                square.moveme(oppmoves[2],oppmoves[3],oppmoves[4])
-                print("flag5")###
+                square = board.square[oppmoves[0]][oppmoves[1]]
+                square.moveme([oppmoves[2],oppmoves[3]],oppmoves[4])
+                os.system('cls' if os.name == 'nt' else 'clear')
             ##Rotate turn
             turncolor = (turncolor+1)%2
         input("Game over")
     except LostComs:
         chessconnection.close()
         input("Lost communication... continuing to single sided play.")
-        gamecycleUNISIDE(color)
+        gamecycleUNISIDE(turncolor)
 
 def gamecycleUNISIDE(startcolor): ##The place the client and host send the game after losing comunication
     pass
