@@ -39,6 +39,12 @@ def speak(clientsocket,send):
             raise LostComs
     return(send)
 
+def arraypackage(array): ##array (of strings) to string
+    package = str(array.pop())
+    while len(array)>0:
+        package = str(array.pop()) + "$!#" + package
+    return package
+
 if __name__ == "__main__":
     connection = clientme(HOST, PORT)
     while True:

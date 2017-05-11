@@ -34,6 +34,10 @@ def listen(connection):
             break
     return(data)
 
+def arrayunpackage(package): ##string to array (of strings)
+    array = package.split("$!#")
+    return array
+
 if __name__ == "__main__":
     connection = hostme(HOST,PORT)
     while True:
