@@ -800,14 +800,30 @@ def gamecycleHOTSEAT():
     input("(To leave press enter 1 last time.)")
 
 def gamecycleSIDEHOST():
-    pass
+    #$Choose the starting color and tell it to the client
+    try:
+        input("GOOD")###
+    except LostComs:
+        chessconnection.close()
+        input("Lost communication... continuing to single sided play.")
+        gamecycleUNISIDE(color)
 
 def gamecycleSIDECLIENT():
+    #$Wait for host to choose color
+    try:
+        input("GOOD")###
+    except LostComs:
+        chessconnection.close()
+        input("Lost communication... continuing to single sided play.")
+        gamecycleUNISIDE(color)
+
+def gamecycleUNISIDE(startcolor): ##The place the client and host send the game after losing comunication
     pass
 
 asknotation()
 #test()
 
+##The code below starts the game
 if not(multi): ##no modules to do multiplayer
     gamecycleHOTSEAT()
 
@@ -824,7 +840,7 @@ else: ##modules are present
             try:
                 chesssocket = hostme(HOST,PORT)
                 chessconnection = chesssocket.connection
-                input("GOOD")###
+                gamecycleSIDEHOST()
             except Exception as e:
                 input("There was an issue... >> " + str(e))
                 gamecycleHOTSEAT()
@@ -838,11 +854,10 @@ else: ##modules are present
             try:
                 chesssocket = clientme(HOST,PORT)
                 chessconnection = chesssocket.clientsocket
-                input("GOOD")###
+                gamecycleSIDECLIENT()
             except Exception as e:
                 input("There was an issue... >> " + str(e))
                 gamecycleHOTSEAT()
-        #$CLIENT/HOST cycle
     
     else: ##not multiplayer
         gamecycleHOTSEAT()
