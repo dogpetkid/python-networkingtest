@@ -40,6 +40,7 @@ class RankFileError(Exception):
     ##Error some of the folloring code using ranks and files
     message = "NotationConversion was given an inncorrect value of rankfile."
 
+colors = ["Black","White"]
 ##Asks for the function under this one to run or not
 notation = ""
 printfile = ""
@@ -131,7 +132,8 @@ class piece():
     def piece(self):
         return(type(self).__name__)
     
-    def moveme(self,coords):
+    ##Upgrade should not be stated unless the promotion of the piece is known
+    def moveme(self,coords,upgrade=True):
         ##Movement is the deletion of the old object and cloning it into it's new location (like teleportation but in an array)
         board.square[self.x][self.y] = ""
         self.x = coords[0]
@@ -139,10 +141,9 @@ class piece():
         board.square[self.x][self.y] = self
         try:
             self.moved = True
-            upgrade = []
             ##Pawn promotion:
             ##If a pawn gets to the last rank of the rank
-            if self.piece() == "pawn" and self.y == 7:
+            if self.piece() == "pawn" and self.y == 7 and upgrade == True: ##The upgrade=True in the defenition is so a forceful promotion (for playing multiplayer) is possible
                 upgrade = choosen("Promote your pawn, choose a piece:",["rook","bishop","knight","queen"],1)
             if upgrade == "rook":
                 action = rook
@@ -156,8 +157,10 @@ class piece():
                 ##Changes the pawn whith it's new form
                 board.square[self.x][self.y] = action(self.x,self.y,self.color)
                 board.square[self.x][self.y].moved = True
+                return upgrade ##Allows for the program to know what you promoted the piece into
         except:
             pass
+        return ""
         
 
 
@@ -644,6 +647,7 @@ class board:
             print(asc)
     
     def turn(color):
+        global multi
         ##Function to remove moves that don't get the king out of check
         def widdle(checkpossible,square,check,possible):
             realpossible = []
@@ -691,9 +695,9 @@ class board:
                 
                 if len(possibleendgame) == 0:#$Fix so that endgame works
                     if check:
-                        return "Checkmate"
+                        return ["Checkmate"]
                     else:
-                        return "Stalemate"
+                        return ["Stalemate"]
         except:
             pass
         
@@ -735,17 +739,17 @@ class board:
                 input((square.piece()).capitalize() + " has no valid moves. (Hit enter)")
                 continue
             board.asciiboard(color,realpossible)
-            x = getxy(printfile)
-            y = getxy(printrank)
-            if not([x,y] in realpossible):
+            xm = getxy(printfile)
+            ym = getxy(printrank)
+            if not([xm,ym] in realpossible):
                 input("That is not a possible move... sending you back to piece selection. (Hit enter)")
                 continue
             ##Piece movement
-            square.moveme([x,y])
+            promote = square.moveme([xm,ym])
             input("(Hit enter)")
             os.system('cls' if os.name == 'nt' else 'clear')
             break
-        return ""
+        return ["",x,y,xm,ym,promote]
 
 
 
@@ -785,13 +789,13 @@ def gamecycleHOTSEAT():
     while True:
         ##The 'end' variable is a message for the end of the game
         #$but the game does not end yet...
-        end = board.turn(1)
+        end = board.turn(1)[0]##Ignores muliplayer responces
         if end != "":
             input(end)
             if end == "Checkmate":
                 input("Black wins")
                 break
-        end = board.turn(0)
+        end = board.turn(0)[0]##Ignores multiplayer responces
         if end != "":
             input(end)
             if end == "Checkmate":
@@ -801,11 +805,35 @@ def gamecycleHOTSEAT():
 
 def gamecycleSIDEHOST():
     global chessconnection
+    global colors
     sidecolor = choose2("Color? White(1) or Black(0)","1","0",1)
     speak(chessconnection,sidecolor)
     sidecolor = int(sidecolor)
+    oppcolor = (int(sidecolor)+1)%2
     try:
-        input("Good " + str(sidecolor))###
+        turncolor = 1
+        while True: ##Turn distributer
+            if turncolor == sidecolor:
+                print("Your turn: ")
+                moves = board.turn(sidecolor)
+                if moves[0] != "":
+                    input(end)
+                    if end == "Checkmate":
+                        input(colors[oppcolor]+" wins.")
+                        break
+                packmoves = arraypackage(moves[1:])
+                speak(chessconnection,packmoves)
+            else:
+                print("Opponent's turn...")
+                packoppmoves = listen(chessconnection)
+                oppmoves = arrayunpackage(packoppmoves)
+                for i in range(4):
+                    oppmoves[i] = int(oppmoves[i])
+                square = board.square[oppmoves[0],oppmoves[1]]#$list indices must be integers or slices, not tuple
+                square.moveme(oppmoves[2:])
+            ##Rotate turn
+            turncolor = (turncolor+1)%2
+        input("Game over")
     except LostComs:
         chessconnection.close()
         input("Lost communication... continuing to single sided play.")
@@ -813,11 +841,36 @@ def gamecycleSIDEHOST():
 
 def gamecycleSIDECLIENT():
     global chessconnection
+    global colors
     print("Waiting for HOST to pick their color.")
     oppcolor = listen(chessconnection)
     sidecolor = (int(oppcolor)+1)%2 ##I know the other side's color so I can add 1 and mod 2 (white(1)+1>>2>>0, black(0)+1>>1%2>>1)
     try:
-        input("Good " + str(sidecolor))###
+        turncolor = 1
+        while True: ##Turn distributer
+            if turncolor == sidecolor:
+                print("Your turn: ")
+                moves = board.turn(sidecolor)
+                if moves[0] != "":
+                    input(end)
+                    if end == "Checkmate":
+                        input(colors[oppcolor]+" wins.")
+                        break
+                packmoves = arraypackage(moves[1:])
+                speak(chessconnection,packmoves)
+            else:
+                print("Opponent's turn...")
+                packoppmoves = listen(chessconnection)
+                oppmoves = arrayunpackage(packoppmoves)
+                for i in range(4):
+                    oppmoves[i] = int(oppmoves[i])
+                square = board.square[oppmoves[0],oppmoves[1]]#$list indices must be integers or slices, not tuple
+                print("flag4")###
+                square.moveme(oppmoves[2],oppmoves[3],oppmoves[4])
+                print("flag5")###
+            ##Rotate turn
+            turncolor = (turncolor+1)%2
+        input("Game over")
     except LostComs:
         chessconnection.close()
         input("Lost communication... continuing to single sided play.")
