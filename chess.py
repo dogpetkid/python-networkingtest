@@ -814,7 +814,8 @@ def gamecycleSIDEHOST():
         turncolor = 1
         while True: ##Turn distributer
             if turncolor == sidecolor:
-                print("Your turn: ")
+                input("Your turn: ")
+                winsound.PlaySound(None,0)
                 moves = board.turn(sidecolor)
                 if moves[0] != "":
                     input(end)
@@ -833,6 +834,7 @@ def gamecycleSIDEHOST():
                 square = board.square[oppmoves[0]][oppmoves[1]]
                 square.moveme([oppmoves[2],oppmoves[3]],oppmoves[4])
                 os.system('cls' if os.name == 'nt' else 'clear')
+                winsound.PlaySound("SystemExclamation",winsound.SND_ASYNC | winsound.SND_LOOP)
             ##Rotate turn
             turncolor = (turncolor+1)%2
         input("Game over")
@@ -851,7 +853,8 @@ def gamecycleSIDECLIENT():
         turncolor = 1
         while True: ##Turn distributer
             if turncolor == sidecolor:
-                print("Your turn: ")
+                input("Your turn: ")
+                winsound.PlaySound(None,0)
                 moves = board.turn(sidecolor)
                 if moves[0] != "":
                     input(end)
@@ -870,6 +873,7 @@ def gamecycleSIDECLIENT():
                 square = board.square[oppmoves[0]][oppmoves[1]]
                 square.moveme([oppmoves[2],oppmoves[3]],oppmoves[4])
                 os.system('cls' if os.name == 'nt' else 'clear')
+                winsound.PlaySound("SystemExclamation",winsound.SND_ASYNC | winsound.SND_LOOP)
             ##Rotate turn
             turncolor = (turncolor+1)%2
         input("Game over")
