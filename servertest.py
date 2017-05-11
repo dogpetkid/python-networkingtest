@@ -1,6 +1,6 @@
 import socket
 
-Vnum = "1.0"
+Vnum = "1.1.1"
 HOST = socket.gethostbyname(socket.gethostname())
 PORT = 8089
 
