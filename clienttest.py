@@ -1,7 +1,7 @@
 import socket
 import servertest
 
-Vnum = "0.2.0"
+Vnum = "0.2.1"
 HOST = '192.168.112.146'
 PORT = 8089
 

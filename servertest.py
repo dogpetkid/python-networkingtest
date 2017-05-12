@@ -1,7 +1,7 @@
 import socket
 import clienttest
 
-Vnum = "0.2.0"
+Vnum = "0.2.1"
 HOST = socket.gethostbyname(socket.gethostname())
 PORT = 8089
 
