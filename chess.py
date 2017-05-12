@@ -889,7 +889,17 @@ def gamecycleSIDECLIENT():
         gamecycleUNISIDE(turncolor)
 
 def gamecycleUNISIDE(startcolor): ##The place the client and host send the game after losing comunication
-    pass
+    global colors
+    while True:
+        ##The 'end' variable is a message for the end of the game
+        end = board.turn(startcolor)[0]##Ignores muliplayer responces
+        if end != "":
+            input(end)
+            if end == "Checkmate":
+                input(colors[(startcolor+1)%2] + " wins")
+                break
+        startcolor = (startcolor+1)%2
+    input("(To leave press enter 1 last time.)")
 
 asknotation()
 #test()

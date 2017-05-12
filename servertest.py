@@ -1,5 +1,5 @@
 import socket
-from clienttest import *
+import clienttest
 
 Vnum = "0.2.0"
 HOST = socket.gethostbyname(socket.gethostname())
@@ -27,7 +27,7 @@ class hostme():
             if serverVnum[n] == clientVnum[n]:
                 vcheck+=1
             else: break
-        speak(self.connection,str(vcheck))
+        clienttest.speak(self.connection,str(vcheck))
         if vcheck == 0:
             input("Compatibility between server/client is not possible.")
             fail = True

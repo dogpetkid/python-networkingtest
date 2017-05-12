@@ -1,5 +1,5 @@
 import socket
-from servertest import *
+import servertest
 
 Vnum = "0.2.0"
 HOST = '192.168.112.146'
@@ -24,10 +24,9 @@ class clientme():
         
         if not(fail):
             print("Verifying...")
-            global speak
             global Vnum
             speak(self.clientsocket,Vnum)
-            vcheck = int(listen(self.clientsocket)) ##Gets how correct the version is
+            vcheck = int(servertest.listen(self.clientsocket)) ##Gets how correct the version is
             if vcheck == 0:
                 input("Compatibility between server/client is not possible.")
                 fail = True
