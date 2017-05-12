@@ -91,6 +91,22 @@ def notationcon(val,rankfile):
     else: ##Else no conversion...
         return int(val)
 
+def antinotationcon(val,rankfile):
+    global notation
+    if notation: ##If chess notation...
+        try:
+            if rankfile == "file": ##Turn letters into numbers
+                val = chr(int(val)+97)
+            elif rankfile == "rank": ##Numbers into other numbers
+                val = int(val)+1
+            else: ##If there is no conversion specified, crash the program forcefully
+                raise RankFileError(RankFileError.message)
+            return val
+        except:
+            raise RankFileError("Something was input wrong...") ##If an incorrect value somehow causes an issue
+    else: ##Else no conversion...
+        return int(val)
+
 ##Simple way to get array format for x or y based on file or rank
 def getxy(rankfile):
     ##Takes an input in order to get an x or y value
@@ -808,6 +824,8 @@ def gamecycleHOTSEAT():
 def gamecycleSIDEHOST():
     global chessconnection
     global colors
+    global printfile
+    global printrank
     sidecolor = choose2("Color? White(1) or Black(0)","1","0",1)
     speak(chessconnection,sidecolor)
     sidecolor = int(sidecolor)
@@ -816,7 +834,7 @@ def gamecycleSIDEHOST():
         turncolor = 1
         while True: ##Turn distributer
             if turncolor == sidecolor:
-                input("Your turn: ")
+                input("Your turn (Hit enter): ")
                 try: winsound.PlaySound(None,0)
                 except: pass
                 moves = board.turn(sidecolor)
@@ -839,6 +857,8 @@ def gamecycleSIDEHOST():
                 os.system('cls' if os.name == 'nt' else 'clear')
                 try: winsound.PlaySound("SystemExclamation",winsound.SND_ASYNC | winsound.SND_LOOP)
                 except: pass
+                print(str(antinotationcon(oppmoves[0],printfile.lower()))+str(antinotationcon(oppmoves[1],printrank.lower()))+" to "+str(antinotationcon(oppmoves[2],printfile.lower()))+str(antinotationcon(oppmoves[3],printrank.lower())))
+                
             ##Rotate turn
             turncolor = (turncolor+1)%2
         input("Game over")
@@ -850,6 +870,8 @@ def gamecycleSIDEHOST():
 def gamecycleSIDECLIENT():
     global chessconnection
     global colors
+    global printfile
+    global printrank
     print("Waiting for HOST to pick their color.")
     oppcolor = listen(chessconnection)
     sidecolor = (int(oppcolor)+1)%2 ##I know the other side's color so I can add 1 and mod 2 (white(1)+1>>2>>0, black(0)+1>>1%2>>1)
@@ -857,7 +879,7 @@ def gamecycleSIDECLIENT():
         turncolor = 1
         while True: ##Turn distributer
             if turncolor == sidecolor:
-                input("Your turn: ")
+                input("Your turn (Hit enter): ")
                 try: winsound.PlaySound(None,0)
                 except: pass
                 moves = board.turn(sidecolor)
@@ -880,6 +902,7 @@ def gamecycleSIDECLIENT():
                 os.system('cls' if os.name == 'nt' else 'clear')
                 try: winsound.PlaySound("SystemExclamation",winsound.SND_ASYNC | winsound.SND_LOOP)
                 except: pass
+                print(str(antinotationcon(oppmoves[0],printfile.lower()))+str(antinotationcon(oppmoves[1],printrank.lower()))+" to "+str(antinotationcon(oppmoves[2],printfile.lower()))+str(antinotationcon(oppmoves[3],printrank.lower())))
             ##Rotate turn
             turncolor = (turncolor+1)%2
         input("Game over")
