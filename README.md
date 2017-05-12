@@ -9,25 +9,25 @@ The server and client side (tests) are meant to be used together. To get the 2 t
 
 ## Client and Server arraytest
 Useless test file as a proof of concept to send arrays.
-## Uses
+### Uses
 * Proves the concept of sending an array as a string and then extracting the array from the string again.
 * Sends array from client to server.
 
 ## Hybrid test
 A file proving a turn based chat.
-## Uses
+### Uses
 * Proves sending data both ways on a socket connection.
 * Choose between host or client connection.
 * Turn based "chat" sending strings.
 
 ## Choose
 Simple hand-written module to foce a user to choose only what is in a list of choices.
-## Uses
+### Uses
 * Module that returns a choice from the user that they get from a  list.
 
 ## Chess
 Hand-written code to play chess.
-## Uses
+### Uses
 * Plays chess heavily focused on the object oriented part of python.
 * Has a board with pieces that 'move' themselves from user input.
 * Has multiplayer compatablility (since v0.1.0).
