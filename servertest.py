@@ -1,6 +1,7 @@
 import socket
+from clienttest import *
 
-Vnum = "1.1.1"
+Vnum = "0.2.0"
 HOST = socket.gethostbyname(socket.gethostname())
 PORT = 8089
 
@@ -14,7 +15,36 @@ class hostme():
         self.serversocket.listen(num) #*num* connections max
         print("Listening...")
         self.connection, self.address = self.serversocket.accept() ##accepts connections
-        print("Connected!")
+        fail = False
+        
+        print("Verifying...")
+        clientVnum = listen(self.connection)
+        clientVnum = clientVnum.split(".") ##Gets version of client
+        global Vnum
+        serverVnum = Vnum.split(".") ##Gets version of server
+        vcheck = 0
+        for n in range(3): ##Checks how far in the versions are the same
+            if serverVnum[n] == clientVnum[n]:
+                vcheck+=1
+            else: break
+        speak(self.connection,str(vcheck))
+        if vcheck == 0:
+            input("Compatibility between server/client is not possible.")
+            fail = True
+        elif vcheck == 1:
+            input("Compatibility between server/client is probable, no attempt to connect will be made.")
+            fail = True
+        elif vcheck == 2:
+            input("Compatibility between server/client is possible.")
+            fail = False
+        elif vcheck == 3:
+            print("No compatibility issues.")
+            fail = False
+        
+        if fail:
+            input("Error occured, terminating connection.")
+            raise LostComs
+        
     def __enter__(self):
         return self
     def __exit__(self, exc_type, exc_val, exc_tb):

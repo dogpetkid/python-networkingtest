@@ -1,6 +1,7 @@
 import socket
+from servertest import *
 
-Vnum = "1.1.1"
+Vnum = "0.2.0"
 HOST = '192.168.112.146'
 PORT = 8089
 
@@ -11,7 +12,7 @@ class clientme():
         for i in range(1,35): ##Wait for connection
             try:
                 self.clientsocket.connect((HOST,PORT))
-                print("Connected!")
+                ##goes to verifying
                 fail = False
                 break
             except:
@@ -19,8 +20,28 @@ class clientme():
                     print(".."+("."*int(((i/6)%3)+1))) ##Rotates from 3 to 5 dots to show that it is trying to conect
                 fail = True
                 pass
+        if fail: print("No connection...")
+        
+        if not(fail):
+            print("Verifying...")
+            global speak
+            global Vnum
+            speak(self.clientsocket,Vnum)
+            vcheck = int(listen(self.clientsocket)) ##Gets how correct the version is
+            if vcheck == 0:
+                input("Compatibility between server/client is not possible.")
+                fail = True
+            elif vcheck == 1:
+                input("Compatibility between server/client is probable, no attempt to connect will be made.")
+            elif vcheck == 2:
+                input("Compatibility between server/client is possible.")
+                fail = False
+            elif vcheck == 3:
+                print("No compatibility issues.")
+                fail = False
+            
         if fail:
-            input("No connection...")
+            input("Error occured, terminating connection.")
             raise LostComs
     def __enter__(self):
         return self
