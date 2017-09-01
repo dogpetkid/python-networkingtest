@@ -21,7 +21,7 @@ A file proving a turn based chat.
 * Turn based "chat" sending strings.
 
 ## Choose
-Simple hand-written module to foce a user to choose only what is in a list of choices.
+Simple hand-written module to force a user to choose only what is in a list of choices.
 ### Uses
 * Module that returns a choice from the user that they get from a  list.
 
@@ -30,4 +30,4 @@ Hand-written code to play chess.
 ### Uses
 * Plays chess heavily focused on the object oriented part of python.
 * Has a board with pieces that 'move' themselves from user input.
-* Has multiplayer compatablility (since v0.1.0).
+* Has multiplayer compatibility (since v0.1.0).
